@@ -23,6 +23,9 @@ public class Training {
     @Column(name = "date")
     private Date date;
 
+    @Column(name = "calories")
+    private int calories;
+
     @Column(name = "duration")
-    private Time duration;
+    private int duration;
 }
