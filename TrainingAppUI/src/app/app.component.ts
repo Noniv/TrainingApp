@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
   trainingFormGroup!: FormGroup;
   trainings: Training[] = [];
   isEditMode = false;
-  averageDuration = 0;
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -34,9 +33,9 @@ export class AppComponent implements OnInit {
       description: ['', Validators.required],
       duration: ['', Validators.required],
       calories: ['', Validators.required],
+      distance: ['', Validators.required],
     });
     this.getTraining();
-    this.getAverageDuration();
   }
 
   openSnackBar(message: string) {
@@ -53,17 +52,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  getAverageDuration() {
-    this.httpService.getAverageDuration().subscribe((data) => {
-      this.averageDuration = data;
-    });
-  }
-
   deleteTraining(id: number | undefined) {
     if (id) {
       this.httpService.deleteTraining(id).subscribe((data) => {
         this.getTraining();
-        this.getAverageDuration();
         this.openSnackBar("Usunięto trening")
       });
     }
@@ -82,8 +74,11 @@ export class AppComponent implements OnInit {
       this.isEditMode = false;
       this.openSnackBar("Zaktualizowano trening")
       this.getTraining();
-      this.getAverageDuration();
     });
+  }
+
+  toggleEditMode() {
+    this.isEditMode = !this.isEditMode;
   }
 
   onSubmit() {
@@ -99,10 +94,11 @@ export class AppComponent implements OnInit {
         description: formValue?.description,
         duration: formValue?.duration,
         calories: formValue?.calories,
+        distance: formValue?.distance,
       };
       this.httpService.createTraining(trainingRequest).subscribe((data) => {
+        this.trainingFormGroup.reset();
         this.getTraining();
-        this.getAverageDuration();
         this.openSnackBar("Dodano trening")
       });
     }

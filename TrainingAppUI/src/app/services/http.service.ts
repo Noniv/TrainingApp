@@ -23,15 +23,6 @@ export class HttpService {
     );
   }
 
-  getAverageDuration(): Observable<number> {
-    return this.httpClient.get<number>(`${this.trainingApi}/search/averageDuration`).pipe(
-      map((response) => {
-        console.log(response)
-        return response;
-      })
-    );
-  }
-
   deleteTraining(id: number): Observable<Training> {
     const url = `${this.trainingApi}/${id}`;
     return this.httpClient.delete<Training>(url);

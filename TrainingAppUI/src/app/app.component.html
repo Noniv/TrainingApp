@@ -4,10 +4,7 @@
       <mat-card-title>Dodaj trening</mat-card-title>
     </mat-card-header>
 
-    <form
-      [formGroup]="trainingFormGroup"
-      (ngSubmit)="onSubmit()"
-    >
+    <form [formGroup]="trainingFormGroup" (ngSubmit)="onSubmit()">
       <mat-form-field>
         <mat-label>Wybierz dzień</mat-label>
         <input matInput [matDatepicker]="picker" formControlName="date" />
@@ -23,6 +20,11 @@
         <span matTextSuffix>min</span>
       </mat-form-field>
       <mat-form-field>
+        <mat-label>Dystans</mat-label>
+        <input type="number" matInput formControlName="distance" />
+        <span matTextSuffix>km</span>
+      </mat-form-field>
+      <mat-form-field>
         <mat-label>Spalone kalorie</mat-label>
         <input type="number" matInput formControlName="calories" />
         <span matTextSuffix>kcal</span>
@@ -31,14 +33,11 @@
         <mat-label>Uwagi do treningu</mat-label>
         <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
-
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-      >
-      {{ isEditMode ? "Aktualizuj" : "Dodaj" }}
-      </button>
+      <button *ngIf="!isEditMode" mat-raised-button color="primary" type="submit">Dodaj</button>
+      <div *ngIf="isEditMode" class="edit-mode-buttons">
+        <button mat-raised-button color="primary" type="submit">Aktualizuj</button>
+        <button mat-raised-button color="warn" type="button" (click)="toggleEditMode()">Anuluj</button>
+      </div>
     </form>
   </mat-card>
 
@@ -48,18 +47,31 @@
         <th scope="col">Opis treningu</th>
         <th scope="col">Data treningu</th>
         <th scope="col">Długość treningu</th>
+        <th scope="col">Pokonany dystans</th>
+        <th scope="col">Średnia prędkość</th>
         <th scope="col">Spalone kalorie</th>
         <th scope="col">Zarządzaj treningiem</th>
       </tr>
     </thead>
     <tbody class="table-group-divider">
       <tr *ngFor="let training of trainings">
-        <td class="col-md-4">{{ training.description }}</td>
-        <td class="col-md-2">{{ training.date | date: 'yyyy-MM-dd'}}</td>
-        <td class="col-md-2">{{ training.duration }} min</td>
-        <td class="col-md-2">{{ training.calories }}</td>
-        <td class="col-md-4">
-          <button mat-icon-button aria-label="Edytuj" (click)="handleUpdateTraining(training)">
+        <td class="col-md-5">{{ training.description }}</td>
+        <td class="col-md-1">{{ training.date | date : "yyyy-MM-dd" }}</td>
+        <td class="col-md-1">{{ training.duration }} min</td>
+        <td class="col-md-1">{{ training.distance }} km</td>
+        <td class="col-md-1">
+          {{
+            training.distance / (training.duration / 60) | number : "1.0-0"
+          }}
+          km/h
+        </td>
+        <td class="col-md-1">{{ training.calories }}</td>
+        <td class="col-md-2">
+          <button
+            mat-icon-button
+            aria-label="Edytuj"
+            (click)="handleUpdateTraining(training)"
+          >
             <mat-icon
               color="primary"
               aria-hidden="false"
@@ -83,7 +95,4 @@
       </tr>
     </tbody>
   </table>
-  <div class="average-time">
-    Średni czas treningu: {{ averageDuration }} min
-  </div>
 </div>

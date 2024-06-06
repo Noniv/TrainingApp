@@ -7,3 +7,8 @@ form {
     font-size: 16px;
     font-weight: 500;
 }
+.edit-mode-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
