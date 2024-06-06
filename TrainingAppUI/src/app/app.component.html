@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Dodaj trening</mat-card-title>
+      <mat-card-title>{{ isEditMode ? "Aktualizuj trening" : "Dodaj trening" }}</mat-card-title>
     </mat-card-header>
 
     <form [formGroup]="trainingFormGroup" (ngSubmit)="onSubmit()">

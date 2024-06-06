@@ -79,6 +79,7 @@ export class AppComponent implements OnInit {
 
   toggleEditMode() {
     this.isEditMode = !this.isEditMode;
+    this.trainingFormGroup.reset();
   }
 
   onSubmit() {
