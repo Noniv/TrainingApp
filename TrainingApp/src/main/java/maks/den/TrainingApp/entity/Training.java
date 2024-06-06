@@ -26,6 +26,9 @@ public class Training {
     @Column(name = "calories")
     private int calories;
 
+    @Column(name = "distance")
+    private int distance;
+
     @Column(name = "duration")
     private int duration;
 }
